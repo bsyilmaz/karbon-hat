@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Karbon Hat — 90 Saniyelik Demo</title>
+<style>
+  :root{--bg:#060a13;--panel:#0d1728;--line:#1e2c48;--text:#eaf1ff;--muted:#8fa3c8;--teal:#5eead4;--blue:#60a5fa;--warn:#fbbf24;--bad:#fb7185;--ok:#34d399}
+  *{box-sizing:border-box} body{margin:0;background:radial-gradient(900px 500px at 10% -10%,rgba(94,234,212,.10),transparent 60%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;line-height:1.5}
+  .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
+  header{border-bottom:1px solid var(--line);background:rgba(6,10,19,.8);position:relative;z-index:20;backdrop-filter:blur(12px)}
+  .bar{display:flex;align-items:center;gap:14px;padding:14px 0}
+  .mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--teal),var(--blue));display:grid;place-items:center;color:#041018;font-weight:900}
+  .brand{font-weight:800;letter-spacing:.02em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.16em}
+  .badge{margin-left:auto;border:1px solid rgba(94,234,212,.3);color:var(--teal);background:rgba(94,234,212,.07);padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.1em}
+  .hero{padding:38px 0 18px}.eyebrow{color:var(--teal);font-size:11px;letter-spacing:.2em;font-weight:800;text-transform:uppercase}
+  h1{font-size:clamp(28px,4vw,48px);line-height:1.05;letter-spacing:-.04em;margin:8px 0 10px}h1 span{color:var(--muted)}
+  .lead{color:var(--muted);max-width:780px;font-size:15px}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin:18px 0}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .card h3{margin:0 0 4px;font-size:15px}.muted{color:var(--muted)}.small{font-size:12px}
+  .field{margin:10px 0}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.08em;text-transform:uppercase}
+  input,select{width:100%;background:#081120;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:inherit}
+  .btn{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+  .btn.primary{background:linear-gradient(135deg,var(--teal),#7dd3fc);color:#041018;border-color:transparent}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .pill{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
+  .supplier{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer;transition:.2s}
+  .supplier:hover{border-color:#38507e;transform:translateY(-1px)}
+  .supplier.sel{border-color:var(--teal);background:rgba(94,234,212,.05)}
+  .supplier .head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+  .supplier b{font-size:14px}.score{font-size:22px;font-weight:900;color:var(--teal)}
+  .supplier .meta{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:6px}
+  .scorebar{height:6px;background:#081120;border-radius:999px;overflow:hidden;margin-top:8px}.scorebar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--blue))}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+  .total{font-weight:900;color:var(--teal)}
+  .note{border-left:3px solid var(--teal);background:rgba(94,234,212,.05);padding:10px 12px;border-radius:0 10px 10px 0;color:var(--muted);font-size:12px}
+  .modal{position:fixed;inset:0;background:rgba(2,6,12,.75);backdrop-filter:blur(8px);display:none;place-items:center;padding:20px;z-index:50}
+  .modal.show{display:grid}
+  .modal-box{width:min(560px,100%);background:#0b1526;border:1px solid #2a3d63;border-radius:18px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .modal-box h3{margin:0 0 6px;font-size:20px}.modal-box p{color:var(--muted);font-size:13px}
+  .qr{width:132px;height:132px;display:grid;grid-template-columns:repeat(21,1fr);gap:1px;background:#fff;padding:8px;border-radius:8px;margin:10px 0}
+  .qr i{background:#fff}.qr i.b{background:#0b1526}
+  .log{background:#050a12;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#9fb2d6;height:86px;overflow:auto}
+  .log div{padding:2px 0;border-bottom:1px dashed rgba(30,44,72,.5)}
+  .toast{position:fixed;right:18px;bottom:18px;background:#0d1a2e;border:1px solid var(--line);padding:10px 14px;border-radius:10px;font-size:12.5px;opacity:0;transform:translateY(8px);transition:.2s;z-index:80}
+  .toast.show{opacity:1;transform:none}
+  .footer{border-top:1px solid var(--line);margin-top:26px;padding:18px 0 30px;color:var(--muted);font-size:11.5px}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar"><div class="mark">K</div><div class="brand">KARBON HAT<small>SUPPLIER CARBON INTELLIGENCE · DEMO</small></div><span class="badge">SİMÜLASYON</span></div></header>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">90 saniyelik demo · Score → Match → File</div>
+    <h1>Satın almadan önce skorla,<br><span>sonra gümrükten geçir.</span></h1>
+    <p class="lead">Alıcı RFQ açar; doğrulanmış tedarikçileri skor, karbon ve toplam maliyetle karşılaştırır. Seçimden sonra CBAM + DPP dosyası ve QR üretilir. Tüm veriler simülasyondur.</p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3>1 · Alıcı RFQ</h3>
+      <p class="small muted">500 ton çelik · Almanya · Q1 teslim</p>
+      <div class="split">
+        <div class="field"><label>Ürün</label><input value="Çelik (CN 7208)" readonly></div>
+        <div class="field"><label>Miktar</label><input value="500 ton" readonly></div>
+      </div>
+      <div class="split">
+        <div class="field"><label>Varış</label><input value="Almanya" readonly></div>
+        <div class="field"><label>Şart</label><input value="CBAM-ready" readonly></div>
+      </div>
+      <div class="row" style="margin-top:8px"><button class="btn primary" id="matchBtn">Tedarikçi bul →</button><span class="pill">3 doğrulanmış tedarikçi</span></div>
+      <div class="log" id="log" style="margin-top:14px"><div>sistem hazır · demo modu</div></div>
+    </div>
+
+    <div class="card">
+      <h3>2 · Doğrulanmış tedarikçiler</h3>
+      <p class="small muted" style="margin-bottom:10px">Skor satın alınamaz; sadece doğrulanmış veriyle değişir.</p>
+      <div id="suppliers">
+        <div class="supplier" data-id="A" data-score="92" data-carbon="1.8" data-price="620">
+          <div class="head"><b>Tedarikçi A</b><span class="score">92</span></div>
+          <div class="meta"><span>1,8 tCO₂/t</span><span>€620/t</span><span>✓ doğrulanmış</span></div>
+          <div class="scorebar"><i style="width:92%"></i></div>
+        </div>
+        <div class="supplier" data-id="B" data-score="85" data-carbon="2.1" data-price="590">
+          <div class="head"><b>Tedarikçi B</b><span class="score">85</span></div>
+          <div class="meta"><span>2,1 tCO₂/t</span><span>€590/t</span><span>✓ doğrulanmış</span></div>
+          <div class="scorebar"><i style="width:85%"></i></div>
+        </div>
+        <div class="supplier" data-id="C" data-score="78" data-carbon="2.4" data-price="570">
+          <div class="head"><b>Tedarikçi C</b><span class="score">78</span></div>
+          <div class="meta"><span>2,4 tCO₂/t</span><span>€570/t</span><span>✓ doğrulanmış</span></div>
+          <div class="scorebar"><i style="width:78%"></i></div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:10px">C en ucuz fiyatı verir; ama karbonu yüksek olduğu için toplamda pahalı olabilir.</div>
+    </div>
+  </section>
+
+  <section class="card" id="compareCard" style="display:none">
+    <h3>3 · Toplam maliyet</h3>
+    <p class="small muted">Fiyat + CBAM + lojistik + risk. CBAM sertifika fiyatı €80/tCO₂ `[A]`.</p>
+    <table>
+      <thead><tr><th>Tedarikçi</th><th>Skor</th><th>Karbon</th><th>Ürün</th><th>CBAM</th><th>Toplam</th><th></th></tr></thead>
+      <tbody id="compareBody"></tbody>
+    </table>
+    <div class="row" style="margin-top:12px"><button class="btn primary" id="fileBtn" disabled>Dosyayı üret →</button><span class="pill" id="selPill">Tedarikçi seç</span></div>
+  </section>
+
+  <section class="card" id="fileCard" style="display:none;margin-top:16px">
+    <h3>4 · Gümrüğe hazır dosya</h3>
+    <div class="split">
+      <div>
+        <p class="small muted">CBAM + DPP · doğrulayıcı imzası · audit trail</p>
+        <div class="row"><span class="pill">Fatura</span><span class="pill">Sayaç/IoT</span><span class="pill">Tedarikçi verisi</span><span class="pill">Denetçi</span></div>
+        <div class="note" style="margin-top:12px">Demo: dosya ve imza simülasyondur. Gerçek beyan ithalatçıda; son imza akredite doğrulayıcıda.</div>
+      </div>
+      <div style="text-align:center"><div class="qr" id="qr"></div><div class="small muted">Gümrük QR · simülasyon</div></div>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="wrap" style="padding:0">Karbon Hat · demo · tüm veriler simülasyon · satın almadan önce skorla, sonra gümrükten geçir.</div></footer>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="eyebrow">Dosya hazır · simülasyon</div>
+    <h3>CBAM + DPP dosyası üretildi.</h3>
+    <p>Tedarikçi B · 500 ton çelik · 2,1 tCO₂/t · toplam 1.050 tCO₂. Dosya üç kaynaktan doğrulandı; QR gümrükte okutulabilir.</p>
+    <div class="row" style="margin:12px 0"><span class="pill">CBAM</span><span class="pill">DPP</span><span class="pill">Audit trail</span><span class="pill">Denetçi A</span></div>
+    <div class="row"><button class="btn primary" id="deliverBtn">Teslim edildi →</button><button class="btn" id="closeBtn">Kapat</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+const logEl = $('#log');
+function log(t){ const d=document.createElement('div'); d.textContent='['+new Date().toLocaleTimeString('tr-TR')+'] '+t; logEl.appendChild(d); logEl.scrollTop=logEl.scrollHeight; }
+function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2600); }
+let selected=null;
+
+function fmt(n){ return n.toLocaleString('tr-TR'); }
+
+$('#matchBtn').addEventListener('click',()=>{
+  log('RFQ oluşturuldu · 500 t çelik · Almanya · CBAM-ready');
+  log('3 doğrulanmış tedarikçi eşleşti');
+  $('#compareCard').style.display='block';
+  $('#compareCard').scrollIntoView({behavior:'smooth'});
+  renderCompare();
+});
+
+function renderCompare(){
+  const rows = $$('.supplier').map(el=>{
+    const id=el.dataset.id, score=+el.dataset.score, carbon=+el.dataset.carbon, price=+el.dataset.price;
+    const product=500*price, cbam=500*carbon*80, total=product+cbam;
+    return {id,score,carbon,price,product,cbam,total,el};
+  });
+  rows.sort((a,b)=>a.total-b.total);
+  $('#compareBody').innerHTML = rows.map(r=>`
+    <tr>
+      <td><b>${r.id}</b></td><td>${r.score}</td><td>${r.carbon.toFixed(1)} tCO₂/t</td>
+      <td>€${fmt(r.product)}</td><td>€${fmt(r.cbam)}</td><td class="total">€${fmt(r.total)}</td>
+      <td><button class="btn" data-pick="${r.id}">Seç</button></td>
+    </tr>`).join('');
+  $$('[data-pick]').forEach(b=>b.addEventListener('click',()=>{
+    selected=b.dataset.pick;
+    $$('.supplier').forEach(s=>s.classList.toggle('sel',s.dataset.id===selected));
+    $('#selPill').textContent='Seçili: Tedarikçi '+selected;
+    $('#fileBtn').disabled=false;
+    log('Tedarikçi '+selected+' seçildi · toplam maliyet karşılaştırıldı');
+    toast('Tedarikçi '+selected+' seçildi');
+  }));
+}
+
+$('#fileBtn').addEventListener('click',()=>{
+  const el=$(`.supplier[data-id="${selected}"]`);
+  const carbon=+el.dataset.carbon;
+  log('Dosya üretiliyor · CBAM + DPP · '+selected);
+  $('#fileCard').style.display='block';
+  makeQR();
+  $('#modal').classList.add('show');
+  $('#fileCard').scrollIntoView({behavior:'smooth'});
+});
+
+function makeQR(){
+  const qr=$('#qr'); qr.innerHTML='';
+  for(let i=0;i<21*21;i++){
+    const c=document.createElement('i');
+    // deterministic pseudo-QR
+    if(((i*7+Math.floor(i/21)*13)%5)<2) c.className='b';
+    qr.appendChild(c);
+  }
+}
+
+$('#closeBtn').addEventListener('click',()=>$('#modal').classList.remove('show'));
+$('#deliverBtn').addEventListener('click',()=>{
+  const el=$(`.supplier[data-id="${selected}"]`);
+  const s=+el.dataset.score;
+  const newScore=Math.min(100,s+2);
+  el.dataset.score=newScore;
+  el.querySelector('.score').textContent=newScore;
+  el.querySelector('.scorebar i').style.width=newScore+'%';
+  $('#modal').classList.remove('show');
+  log('Teslim edildi · skor güncellendi: '+s+' → '+newScore);
+  toast('Teslim edildi · skor '+s+' → '+newScore);
+  renderCompare();
+});
+</script>
+</body>
+</html>

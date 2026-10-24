@@ -30,7 +30,7 @@ Karbon Hat, AB alıcısının tedarikçiyi **satın almadan önce** doğrulanmı
 
 ## Demo
 
-- **Canlı demo:** `https://bsyilmaz.github.io/karbon-hat/` *(GitHub Pages açıldıysa)*
+- **Canlı demo:** https://bsyilmaz.github.io/karbon-hat/
 - **Yerel:** `demo/index.html` dosyasını tarayıcıda aç. Kurulum yok.
 - Akış: **Tedarikçi bul → toplam maliyet → seç → dosya/QR → teslim/skor güncellemesi.**
 

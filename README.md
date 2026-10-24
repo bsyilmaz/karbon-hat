@@ -36,6 +36,12 @@ Karbon Hat, AB alıcısının tedarikçiyi **satın almadan önce** doğrulanmı
 
 Demo tamamen istemci tarafındadır; gerçek API/veri yoktur. Tüm veriler simülasyondur.
 
+## Mentor paketi
+
+- `mentor/Mentor-Sunum-5-Slayt.pdf` — 5 slaytlık mentor sunumu
+- `mentor/Mentor-Prompter.pdf` — 3 dakikalık büyük puntolu prompter
+- `mentor/Mentor-Soru-Cevap.md` — muhtemel sorular + mentor'a sorulacaklar
+
 ## Repo yapısı
 
 ```
